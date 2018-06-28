@@ -3,6 +3,8 @@ window.onload = getMyLocation;
 function getMyLocation () {
 	//check if geolocation available
 	if(navigator.geolocation) {
+		// method getCurrentPosition - get current lat and long of the user
+		// and return it in displayLocation if success and return error object in displayError if false
 		navigator.geolocation.getCurrentPosition(displayLocation, displayError);
 	} else  {
 		alert("Ooops, no geolocation support");
@@ -10,7 +12,8 @@ function getMyLocation () {
 }
 function displayLocation (position) {
 
-	//get current lat and long
+	// get current lat and long
+	// position is object returned by getCurrentPosition
 	var latitude = position.coords.latitude;
 	var longitude = position.coords.longitude;
 
@@ -23,6 +26,7 @@ function displayLocation (position) {
 	var distance = document.getElementById("distance");
 	distance.innerHTML = "You are  " + km + " km from Wickedly Smart HQ";
 
+	//position.coords is object of only lat and long
 	showMap(position.coords)
 }
 
@@ -85,4 +89,29 @@ function showMap(coords){
 	// Map is constructor from Google API which takes an element
 	// and options and create and returns a map object
 	map = new google.maps.Map(mapDiv, mapOptions);
+
+
+	var title = "Your Location";
+	var content = "You are here:  " + coords.latitude + ", " + coords.longitude;
+	addMarker(map, googleLatAndLong, title, content);
+}
+
+function addMarker (map,  latlong, title, content) {
+	var markerOptions = {
+		position : latlong,
+		map : map,
+		title : title,
+		clickable : true
+	};
+	var marker = new google.maps.Marker(markerOptions);
+
+	var infoWindowOptions = {
+		content : content,
+		position : latlong
+	};
+	var infoWindow = new google.maps.InfoWindow(infoWindowOptions);
+
+	google.maps.event.addListener(marker, "click", function () {
+		infoWindow.open(map);
+	});
 }
