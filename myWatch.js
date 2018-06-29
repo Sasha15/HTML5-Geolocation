@@ -17,14 +17,31 @@ window.onload = getMyLocation;
 function getMyLocation () {
 	//check if geolocation available
 	if(navigator.geolocation) {
-		// method getCurrentPosition - get current lat and long of the user
-		// getCurrentPosition pass Position object to calback function - displayLocation if success
-		// and pass error object in callback function -  displayError if is false
-		navigator.geolocation.getCurrentPosition(displayLocation, displayError);
+
+		var watchButton = document.getElementById("watch");
+		watchButton.onclick = watchLocation;
+
+		var clearWatch = document.getElementById("clearWatch");
+		clearWatch.onclick = clearWatch;
+
 	} else  {
 		alert("Ooops, no geolocation support");
 	}
 }
+
+var watchId = null;
+
+function watchLocation() {
+	watchId = navigator.geolocation.watchPosition(displayLocation, displayError);
+}
+
+function clearWatch() {
+	if(watchId) {
+		navigator.geolocation.clearWatch(watchId);
+		watchId = null;
+	}
+}
+
 function displayLocation (position) {
 
 	// get current lat and long
@@ -43,7 +60,9 @@ function displayLocation (position) {
 	distance.innerHTML = "You are  " + km + " km from Wickedly Smart HQ";
 
 	//position.coords is object of only lat and long
-	showMap(position.coords)
+	if(map == null){
+		showMap(position.coords)
+	}
 }
 
 function displayError(error) {
