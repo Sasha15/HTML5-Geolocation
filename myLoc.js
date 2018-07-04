@@ -9,7 +9,7 @@ window.onload = getMyLocation;
 	getCurrent position uses some related objects
 	1.Position (has two properties - coords and timestamp; coords - object of lat and long; timestamp - time when position object was created)
 	2.Coordinates - is a child of position object and it has latitude, longitude, accurancy and four more properties  which may or may not support on device:
-	altitude, altitudeAccuracy, heading, speed
+	altitude, altitudeAccuracy, heading, speed (heading - is direction user is traveling in)
 
 	watchPosition - watch the user movements and reports location back when user location changes
 */
